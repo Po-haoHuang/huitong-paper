@@ -807,48 +807,15 @@
      </property>
     </item>
    </widget>
-   <widget class="QScrollArea" name="scrollArea">
+   <widget class="QTableView" name="tableView">
     <property name="geometry">
      <rect>
-      <x>60</x>
-      <y>110</y>
-      <width>321</width>
-      <height>211</height>
+      <x>30</x>
+      <y>100</y>
+      <width>401</width>
+      <height>241</height>
      </rect>
     </property>
-    <property name="widgetResizable">
-     <bool>true</bool>
-    </property>
-    <widget class="QWidget" name="scrollAreaWidgetContents">
-     <property name="geometry">
-      <rect>
-       <x>0</x>
-       <y>0</y>
-       <width>319</width>
-       <height>209</height>
-      </rect>
-     </property>
-     <widget class="QTableView" name="tableView">
-      <property name="geometry">
-       <rect>
-        <x>-5</x>
-        <y>1</y>
-        <width>331</width>
-        <height>211</height>
-       </rect>
-      </property>
-     </widget>
-     <widget class="QTableWidget" name="tableWidget">
-      <property name="geometry">
-       <rect>
-        <x>-5</x>
-        <y>1</y>
-        <width>331</width>
-        <height>211</height>
-       </rect>
-      </property>
-     </widget>
-    </widget>
    </widget>
    <zorder>comboBox_5</zorder>
    <zorder>FS_inputLable</zorder>
@@ -887,7 +854,7 @@
    <zorder>lineEdit_10</zorder>
    <zorder>pushButton_5</zorder>
    <zorder>pushButton_6</zorder>
-   <zorder>scrollArea</zorder>
+   <zorder>tableView</zorder>
   </widget>
  </widget>
  <layoutdefault spacing="6" margin="11"/>

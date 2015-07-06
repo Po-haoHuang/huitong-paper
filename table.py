@@ -2,11 +2,10 @@
 
 # Form implementation generated from reading ui file 'mainwindow.ui'
 #
-# Created: Tue Jun 30 12:40:30 2015
+# Created: Tue Jul 07 00:33:15 2015
 #      by: PyQt4 UI code generator 4.11.3
 #
 # WARNING! All changes made in this file will be lost!
-
 
 from PyQt4 import QtCore, QtGui, QtSql
 import PyQt4
@@ -252,22 +251,9 @@ class Ui_MainWindow(object):
         self.comboBox_5.addItem(_fromUtf8(""))
         self.comboBox_5.addItem(_fromUtf8(""))
         self.comboBox_5.addItem(_fromUtf8(""))
-        self.scrollArea = QtGui.QScrollArea(self.centralWidget)
-        self.scrollArea.setGeometry(QtCore.QRect(60, 110, 321, 211))
-        self.scrollArea.setWidgetResizable(True)
-        self.scrollArea.setObjectName(_fromUtf8("scrollArea"))
-        self.scrollAreaWidgetContents = QtGui.QWidget()
-        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 319, 209))
-        self.scrollAreaWidgetContents.setObjectName(_fromUtf8("scrollAreaWidgetContents"))
-        self.tableView = QtGui.QTableView(self.scrollAreaWidgetContents)
-        self.tableView.setGeometry(QtCore.QRect(-5, 1, 331, 211))
+        self.tableView = QtGui.QTableView(self.centralWidget)
+        self.tableView.setGeometry(QtCore.QRect(30, 100, 401, 241))
         self.tableView.setObjectName(_fromUtf8("tableView"))
-        self.tableWidget = QtGui.QTableWidget(self.scrollAreaWidgetContents)
-        self.tableWidget.setGeometry(QtCore.QRect(-5, 1, 331, 211))
-        self.tableWidget.setObjectName(_fromUtf8("tableWidget"))
-        self.tableWidget.setColumnCount(0)
-        self.tableWidget.setRowCount(0)
-        self.scrollArea.setWidget(self.scrollAreaWidgetContents)
         MainWindow.setCentralWidget(self.centralWidget)
 
         self.retranslateUi(MainWindow)
