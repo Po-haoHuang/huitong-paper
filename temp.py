@@ -25,5 +25,4 @@ class MyWindow(QtGui.QDialog):
 if __name__ == '__main__':
     app = QtGui.QApplication(sys.argv)
     window = MyWindow()
-    window
     sys.exit(app.exec_())

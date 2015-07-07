@@ -325,20 +325,27 @@ class Ui_MainWindow(object):
 
 if __name__ == "__main__":
     import sys
+    import os
     app = QtGui.QApplication(sys.argv)
     MainWindow = QtGui.QMainWindow()
     ui = Ui_MainWindow()
     ui.setupUi(MainWindow)
     db = QtSql.QSqlDatabase.addDatabase("QSQLITE")
-    db.setDatabaseName("D:\\huitong-paper\\papers.sqlite")
+    db.setDatabaseName(os.getcwdu()+os.sep+'papers.sqlite')
+    #db.setDatabaseName("D:\\huitong-paper\\papers.sqlite")
     print db.open()
     print db.tables()
-    model = QtSql.QSqlQueryModel()
-    model.setQuery("SELECT * FROM paper".encode('utf8'))
+    model = QtSql.QSqlTableModel(None,db)
+    model.setTable("paper");
+    model.setEditStrategy(QtSql.QSqlTableModel.OnManualSubmit);
+    model.select();    
+#    model = QtSql.QSqlQueryModel()
+#    model.setQuery("SELECT * FROM paper".encode('utf8'))
     #print model.lastError().text()
-    model.setHeaderData(0,1, "paperWeight")
+#    model.setHeaderData(0,1, "paperWeight")
     ui.tableView.setModel(model)
     ui.tableView.show()
+    ui.tableView.setSortingEnabled(True)
     MainWindow.show()
     sys.exit(app.exec_())
 

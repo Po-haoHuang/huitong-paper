@@ -40,9 +40,11 @@ class Paper(SQLObject):
     paperWeight = IntCol()
     paperWeightPerUnit = IntCol()
     paperRollNumber = IntCol()
-    paperSpec = IntCol()
+    paperSpec = StringCol()
     paperLength = IntCol()
     paperStatus = IntCol()
+    paperIndex = DatabaseIndex('groupNumber', 'paperWidth', 'paperWeightPerUnit',
+                               'paperSpec', 'paperStatus', unique = True)
 #    votes_recepie = IntCol()
 #    site_recepie = StringCol(length=50)
 #    description_recepie = StringCol(length=600)
@@ -58,6 +60,16 @@ if Paper._connection.tableExists('paper'):
 else:    
     Paper.createTable()
     Paper._connection.debug = False
+    
+def InputPaper(groupNumber, paperWidth, paperRollNumber, paperSpec,
+                     paperWeight, paperWeightPerUnit, paperLength,
+                     paperStatus):
+    m_paper = database.Paper(
+    groupNumber = int(groupNumber), paperRollNumber = int(paperRollNumber),
+    paperWidth = int(paperWidth), paperSpec = int(paperSpec),
+    paperWeight = int(paperWeight), paperWeightPerUnit = int(paperWeightPerUnit),
+    paperLength = int(paperLength), paperStatus = int(paperStatus))
+
 #Recepie.sqlmeta.addJoin(MultipleJoin('IngredientCouple',
 #                                     joinMethodName='ingredients_recepie'))
 

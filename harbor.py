@@ -14,7 +14,7 @@ def InputHarborPaper(groupNumber, paperWidth, paperRollNumber, paperSpec,
                      paperStatus):
     m_paper = database.Paper(
     groupNumber = int(groupNumber), paperRollNumber = int(paperRollNumber),
-    paperWidth = int(paperWidth), paperSpec = int(paperSpec),
+    paperWidth = int(paperWidth), paperSpec = str(paperSpec),
     paperWeight = int(paperWeight), paperWeightPerUnit = int(paperWeightPerUnit),
     paperLength = int(paperLength), paperStatus = int(paperStatus))
 
