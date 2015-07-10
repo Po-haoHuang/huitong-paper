@@ -7,8 +7,8 @@
 #
 # WARNING! All changes made in this file will be lost!
 
-from PyQt4 import QtCore, QtGui, QtSql
-import PyQt4
+from PyQt4 import QtCore, QtGui
+import layoutlogic
 
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
@@ -330,22 +330,23 @@ if __name__ == "__main__":
     MainWindow = QtGui.QMainWindow()
     ui = Ui_MainWindow()
     ui.setupUi(MainWindow)
-    db = QtSql.QSqlDatabase.addDatabase("QSQLITE")
-    db.setDatabaseName(os.getcwdu()+os.sep+'papers.sqlite')
-    #db.setDatabaseName("D:\\huitong-paper\\papers.sqlite")
-    print db.open()
-    print db.tables()
-    model = QtSql.QSqlTableModel(None,db)
-    model.setTable("paper");
-    model.setEditStrategy(QtSql.QSqlTableModel.OnManualSubmit);
-    model.select();    
-#    model = QtSql.QSqlQueryModel()
-#    model.setQuery("SELECT * FROM paper".encode('utf8'))
-    #print model.lastError().text()
-#    model.setHeaderData(0,1, "paperWeight")
-    ui.tableView.setModel(model)
-    ui.tableView.show()
-    ui.tableView.setSortingEnabled(True)
+    layoutlogic.TableViewSetuo(ui,layoutlogic.SQLModelSetup(layoutlogic.DBSetup()))
+#    db = QtSql.QSqlDatabase.addDatabase("QSQLITE")
+#    db.setDatabaseName(os.getcwdu()+os.sep+'papers.sqlite')
+#    #db.setDatabaseName("D:\\huitong-paper\\papers.sqlite")
+#    print db.open()
+#    print db.tables()
+#    model = QtSql.QSqlTableModel(None,db)
+#    model.setTable("paper");
+#    model.setEditStrategy(QtSql.QSqlTableModel.OnManualSubmit);
+#    model.select();    
+##    model = QtSql.QSqlQueryModel()
+##    model.setQuery("SELECT * FROM paper".encode('utf8'))
+#    #print model.lastError().text()
+##    model.setHeaderData(0,1, "paperWeight")
+#    ui.tableView.setModel(model)
+#    ui.tableView.show()
+#    ui.tableView.setSortingEnabled(True)
     MainWindow.show()
     sys.exit(app.exec_())
 
