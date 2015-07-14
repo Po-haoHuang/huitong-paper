@@ -10,6 +10,18 @@
     <height>324</height>
    </rect>
   </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>436</width>
+    <height>324</height>
+   </size>
+  </property>
   <property name="windowTitle">
    <string>正規紙入庫</string>
   </property>
@@ -92,13 +104,13 @@
     <string/>
    </property>
    <property name="text">
-    <string>1-23</string>
+    <string/>
    </property>
    <property name="maxLength">
     <number>32767</number>
    </property>
    <property name="cursorPosition">
-    <number>4</number>
+    <number>0</number>
    </property>
    <property name="dragEnabled">
     <bool>false</bool>
@@ -173,13 +185,13 @@
     <string/>
    </property>
    <property name="text">
-    <string>1-23</string>
+    <string/>
    </property>
    <property name="maxLength">
     <number>32767</number>
    </property>
    <property name="cursorPosition">
-    <number>4</number>
+    <number>0</number>
    </property>
    <property name="dragEnabled">
     <bool>false</bool>
@@ -225,13 +237,13 @@
     <string/>
    </property>
    <property name="text">
-    <string>1-23</string>
+    <string/>
    </property>
    <property name="maxLength">
     <number>32767</number>
    </property>
    <property name="cursorPosition">
-    <number>4</number>
+    <number>0</number>
    </property>
    <property name="dragEnabled">
     <bool>false</bool>
@@ -311,13 +323,13 @@
     <string/>
    </property>
    <property name="text">
-    <string>1-23</string>
+    <string/>
    </property>
    <property name="maxLength">
     <number>32767</number>
    </property>
    <property name="cursorPosition">
-    <number>4</number>
+    <number>0</number>
    </property>
    <property name="dragEnabled">
     <bool>false</bool>
@@ -376,13 +388,13 @@
     <string/>
    </property>
    <property name="text">
-    <string>1-23</string>
+    <string/>
    </property>
    <property name="maxLength">
     <number>32767</number>
    </property>
    <property name="cursorPosition">
-    <number>4</number>
+    <number>0</number>
    </property>
    <property name="dragEnabled">
     <bool>false</bool>
@@ -428,13 +440,13 @@
     <string/>
    </property>
    <property name="text">
-    <string>1-23</string>
+    <string/>
    </property>
    <property name="maxLength">
     <number>32767</number>
    </property>
    <property name="cursorPosition">
-    <number>4</number>
+    <number>0</number>
    </property>
    <property name="dragEnabled">
     <bool>false</bool>
@@ -480,13 +492,13 @@
     <string/>
    </property>
    <property name="text">
-    <string>1-23</string>
+    <string/>
    </property>
    <property name="maxLength">
     <number>32767</number>
    </property>
    <property name="cursorPosition">
-    <number>4</number>
+    <number>0</number>
    </property>
    <property name="dragEnabled">
     <bool>false</bool>
