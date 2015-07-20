@@ -6,10 +6,8 @@ Created on Mon Jul 06 13:44:07 2015
 """
 
 import sqlite3 as lite
-import pandas.io.sql as psql
-import re
 import os
-import sys
+
 
 DB = os.getcwdu()+os.sep+'papers.sqlite'
 try:
