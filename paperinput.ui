@@ -23,7 +23,7 @@
    </size>
   </property>
   <property name="windowTitle">
-   <string>正規紙入庫</string>
+   <string>正規紙輸入</string>
   </property>
   <widget class="QDialogButtonBox" name="paperInputButtonBox">
    <property name="geometry">
@@ -270,7 +270,7 @@
     </font>
    </property>
    <property name="text">
-    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;正規紙入庫&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;正規紙輸入&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
    </property>
    <property name="alignment">
     <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>

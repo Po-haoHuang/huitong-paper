@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'resultdialog.ui'
 #
-# Created: Tue Jul 14 21:18:37 2015
+# Created: Tue Jul 21 16:48:26 2015
 #      by: PyQt4 UI code generator 4.11.3
 #
 # WARNING! All changes made in this file will be lost!
@@ -27,14 +27,28 @@ class Ui_ResultDialog(object):
     def setupUi(self, ResultDialog):
         ResultDialog.setObjectName(_fromUtf8("ResultDialog"))
         ResultDialog.resize(235, 137)
+        self.verticalLayout = QtGui.QVBoxLayout(ResultDialog)
+        self.verticalLayout.setObjectName(_fromUtf8("verticalLayout"))
+        self.resultlabel = QtGui.QLabel(ResultDialog)
+        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.MinimumExpanding, QtGui.QSizePolicy.MinimumExpanding)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.resultlabel.sizePolicy().hasHeightForWidth())
+        self.resultlabel.setSizePolicy(sizePolicy)
+        self.resultlabel.setAlignment(QtCore.Qt.AlignCenter)
+        self.resultlabel.setObjectName(_fromUtf8("resultlabel"))
+        self.verticalLayout.addWidget(self.resultlabel, QtCore.Qt.AlignHCenter)
         self.resultbuttonBox = QtGui.QDialogButtonBox(ResultDialog)
-        self.resultbuttonBox.setGeometry(QtCore.QRect(80, 70, 81, 32))
+        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Fixed, QtGui.QSizePolicy.Fixed)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.resultbuttonBox.sizePolicy().hasHeightForWidth())
+        self.resultbuttonBox.setSizePolicy(sizePolicy)
         self.resultbuttonBox.setOrientation(QtCore.Qt.Horizontal)
         self.resultbuttonBox.setStandardButtons(QtGui.QDialogButtonBox.Ok)
+        self.resultbuttonBox.setCenterButtons(False)
         self.resultbuttonBox.setObjectName(_fromUtf8("resultbuttonBox"))
-        self.resultlabel = QtGui.QLabel(ResultDialog)
-        self.resultlabel.setGeometry(QtCore.QRect(110, 20, 31, 51))
-        self.resultlabel.setObjectName(_fromUtf8("resultlabel"))
+        self.verticalLayout.addWidget(self.resultbuttonBox, QtCore.Qt.AlignHCenter)
 
         self.retranslateUi(ResultDialog)
         QtCore.QObject.connect(self.resultbuttonBox, QtCore.SIGNAL(_fromUtf8("accepted()")), ResultDialog.accept)

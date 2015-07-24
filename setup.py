@@ -21,7 +21,7 @@ sys.setrecursionlimit(5000)
 #    ])]
 
 setup(
-    options = {'py2exe': {'bundle_files': 1, 'compressed': True,"includes":["sip"]}},
+    options = {'py2exe': {'compressed': True,"includes":["sip"]}},
     windows = [{'script': "layoutlogic.py"}],
     zipfile = None,
 #    data_files = DATA,

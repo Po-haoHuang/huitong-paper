@@ -35,8 +35,6 @@ class mySqlTableModel(QtSql.QSqlTableModel):
         if index.isValid():
             if role == QtCore.Qt.BackgroundRole and self.record(index.row()).value('paper_status') >= 5 :
                 return QtGui.QBrush(QtCore.Qt.gray)
-#            if role == QtCore.Qt.ForegroundRole and self.record(index.row()).value('paper_status') >= 5 :
-#                return QtGui.QBrush(QtCore.Qt.red)
             elif role == QtCore.Qt.FontRole and self.record(index.row()).value('paper_status') >= 5 :
                 font = QtGui.QFont()
                 font.setBold(True)
@@ -51,9 +49,8 @@ def DBSetup():
     db = QtSql.QSqlDatabase.addDatabase("QSQLITE")
     db.setDatabaseName(os.getcwdu()+os.sep+'papers.sqlite')
     db.open()
-    #print db.tables()
     return db
-#   db.setDatabaseName("D:\\huitong-paper\\papers.sqlite")
+
 def SQLModelSetup(db,status):
     model = mySqlTableModel(None,db)
     model.setTable("paper")
@@ -63,31 +60,6 @@ def SQLModelSetup(db,status):
     for i in range(model.columnCount()):
         model.setHeaderData(i,Qt.Qt.Horizontal, _translate("model",nameList[i],None))
     return model
-#    model = QtSql.QSqlTableModel(None,db)
-#    model.setTable("paper")
-#    model.setEditStrategy(QtSql.QSqlTableModel.OnManualSubmit)
-#    model.setFilter('paper_status = ' + str(status))
-#    model.select()
-#    for i in range(model.columnCount()):
-#        model.setHeaderData(i,Qt.Qt.Horizontal, _translate("model",nameList[i],None))
-#    return model
-
-
-
-
-
-
-
-
-#    model = QtSql.QSqlQueryModel()
-#    model.setQuery("SELECT * FROM paper".encode('utf8'))
-#    print model.lastError().text()
-#    model.setHeaderData(0,1, "paperWeight")
-
-#def ProxyModelSetup(model):
-#    proxymodel = QtGui.QAbstractProxyModel()
-#    proxymodel.setSourceModel(model)
-
 
 
 def TableViewSetup(ui, model):
@@ -95,6 +67,7 @@ def TableViewSetup(ui, model):
     ui.tableView.hideColumn(6)
     ui.tableView.setSortingEnabled(True)
     ui.tableView.setEditTriggers(QtGui.QAbstractItemView.NoEditTriggers)
+    ui.tableView.horizontalHeader().setResizeMode(Qt.QHeaderView.Stretch)
     ui.tableView.show()
 
 
@@ -109,10 +82,10 @@ def on_combox_status(model,n):
         ui.paperInputPushButton.setDisabled(False)
         ui.paperInputPushButton.setVisible(True)
         ui.paperInputPushButton.setText(_translate("paperInputPushButton", "輸入", None))
-    elif n == 2:
-        ui.paperInputPushButton.setDisabled(False)
-        ui.paperInputPushButton.setVisible(True)
-        ui.paperInputPushButton.setText(_translate("paperInputPushButton", "排單", None))
+#    elif n == 2:
+#        ui.paperInputPushButton.setDisabled(False)
+#        ui.paperInputPushButton.setVisible(True)
+#        ui.paperInputPushButton.setText(_translate("paperInputPushButton", "排單", None))
     else:
         ui.paperInputPushButton.setDisabled(True)
         ui.paperInputPushButton.setVisible(False)
@@ -139,14 +112,10 @@ def on_inputbutton_push(PaperInputDialog):
         PaperScheduleDialog.exec_()
     else:
         pass
-#    for i in range(model.columnCount()):
-#        model.setHeaderData(i,Qt.Qt.Horizontal, _translate("model",nameList[i],None))
-#    ui.tableView.setModel(model)
-#    ui.tableView.hideColumn(6)
-#    ui.tableView.show()
+
 
 def on_paperinput_send(ui, paperinputui, model):
-    print paperinputui.paperSpecEdit.text()
+#    print paperinputui.paperSpecEdit.text()
     try:
         database.InputPaper(paperinputui.groupNumberEdit.text(),\
             paperinputui.paperWidthEdit.text(), paperinputui.paperRollNumberEdit.text(),\
@@ -154,35 +123,36 @@ def on_paperinput_send(ui, paperinputui, model):
             paperinputui.paperWeighPerUnitEdit.text(), paperinputui.paperLengthEdit.text(),\
             str(ui.systemStatusComboBox.currentIndex()+1))
         resultui.resultlabel.setText(_translate("resultui", "成功", None))
+        #resultui.resultlabel.setAlignment()
+        #resultui.resultlabel.adjustSize()
     except Exception,e:
         print e
         resultui.resultlabel.setText(_translate("resultui", "失敗，請檢查輸入", None))
+        #resultui.resultlabel.adjustSize()
     model.select()
     ResultDialog.exec_()
 
-#def on_doubleclick(index):
-#    ResultDialog = QtGui.QDialog()
-#    resultui = resultdialog.Ui_ResultDialog()
-#    resultui.setupUi(ResultDialog)
-#    resultui.resultlabel.setText(str(index.row()))
-#    ResultDialog.exec_()
 
 def on_tableView_horizontalHeader_sectionClicked(index):
     model.currentSelectedIndex = index
     if model.record(index).value('paper_status') == 1:
-        modifyui.transfercheckBox.setText(_translate("resultui", "入庫", None))
+        modifyui.transfercheckBox.setText(_translate("modifyui", "入庫", None))
         modifyui.transfercheckBox.setDisabled(False)
         modifyui.transfercheckBox.setVisible(True)
     elif model.record(index).value('paper_status') == 3:
-        modifyui.transfercheckBox.setText(_translate("resultui", "出貨", None))
+        modifyui.transfercheckBox.setText(_translate("modifyui", "出貨", None))
         modifyui.transfercheckBox.setDisabled(False)
         modifyui.transfercheckBox.setVisible(True)
     elif model.record(index).value('paper_status') == 4:
-        modifyui.transfercheckBox.setText(_translate("resultui", "出貨", None))
+        modifyui.transfercheckBox.setText(_translate("modifyui", "出貨", None))
         modifyui.transfercheckBox.setDisabled(False)
         modifyui.transfercheckBox.setVisible(True)
     elif model.record(index).value('paper_status') == 5:
-        modifyui.transfercheckBox.setText(_translate("resultui", "完工", None))
+        modifyui.transfercheckBox.setText(_translate("modifyui", "完工", None))
+        modifyui.transfercheckBox.setDisabled(False)
+        modifyui.transfercheckBox.setVisible(True)
+    elif model.record(index).value('paper_status') == 6:
+        modifyui.transfercheckBox.setText(_translate("modifyui", "完工", None))
         modifyui.transfercheckBox.setDisabled(False)
         modifyui.transfercheckBox.setVisible(True)
     else :
@@ -194,7 +164,7 @@ def on_tableView_horizontalHeader_sectionClicked(index):
 
 def on_modify_send():
     if modifyui.deletecheckBox.isChecked() == True:
-        print model.record(model.currentSelectedIndex).value('paper_spec')
+        #print model.record(model.currentSelectedIndex).value('paper_spec')
         modifyui.deletecheckBox.setChecked(False)
         model.removeRow(model.currentSelectedIndex)
         return
@@ -212,14 +182,12 @@ def on_modify_send():
             record = QtSql.QSqlRecord(model.record(model.currentSelectedIndex))
             record.setValue('paper_status', 3)
             model.setRecord(model.currentSelectedIndex, record)
-#        elif model.record(model.currentSelectedIndex).value('paper_status') == 6:
-#            record = QtSql.QSqlRecord(model.record(model.currentSelectedIndex))
-#            record.setValue('paper_status', 4)
-#            model.setRecord(model.currentSelectedIndex, record)
+        elif model.record(model.currentSelectedIndex).value('paper_status') == 6:
+            record = QtSql.QSqlRecord(model.record(model.currentSelectedIndex))
+            record.setValue('paper_status', 4)
+            model.setRecord(model.currentSelectedIndex, record)
         else :
             pass
-#            modifyui.transfercheckBox.setDisabled(True)
-#            modifyui.transfercheckBox.setVisible(False)
         modifyui.transfercheckBox.setChecked(False)
     else:
         pass
@@ -257,19 +225,16 @@ def on_paperschedule_send():
 def LayoutLogicSetup(ui,status):
     db = DBSetup()
     model = SQLModelSetup(db, ui.systemStatusComboBox.currentIndex()+1)
-#    proxymodel = ProxyModelSetup(model)
+
     TableViewSetup(ui, model)
     PaperInputDialog = QtGui.QDialog()
     paperinputui = paperinputdialog.Ui_PaperInputDialog()
     paperinputui.setupUi(PaperInputDialog)
     ui.systemStatusComboBox.currentIndexChanged.connect(lambda: on_combox_status(model, ui.systemStatusComboBox.currentIndex()+1))
     ui.paperInputPushButton.clicked.connect(lambda: on_inputbutton_push(PaperInputDialog))
-    #print paperinputui.groupNumberEdit.text()
-    #print type(paperinputui.groupNumberEdit.text())
     paperinputui.paperInputButtonBox.accepted.connect(lambda: on_paperinput_send(ui, paperinputui, model))
     ui.tableView.verticalHeader().sectionClicked.connect(on_tableView_horizontalHeader_sectionClicked)
-#    QtCore.QObject.connect(ui.tableView, QtCore.SIGNAL(_fromUtf8("doubleClicked(QModelIndex)")), on_doubleclick)
-    #QtCore.QObject.connect(ui.tableView.verticalHeader, QtCore.SIGNAL(_fromUtf8("sectionClicked(int )")), on_tableView_horizontalHeader_sectionClicked)
+
 
 if __name__ == "__main__":
     import sys
@@ -277,7 +242,6 @@ if __name__ == "__main__":
     MainWindow = QtGui.QMainWindow()
     ui = table2.Ui_MainWindow()
     ui.setupUi(MainWindow)
-    #LayoutLogicSetup(ui, ui.systemStatusComboBox.currentIndex()+1)
     db = DBSetup()
     model = SQLModelSetup(db, ui.systemStatusComboBox.currentIndex()+1)
     TableViewSetup(ui, model)
@@ -307,48 +271,3 @@ if __name__ == "__main__":
 
     MainWindow.show()
     sys.exit(app.exec_())
-
-
-
-#    import sys
-#    app = QtGui.QApplication(sys.argv)
-#    MainWindow = QtGui.QMainWindow()
-#    ui = table2.Ui_MainWindow()
-#    ui.setupUi(MainWindow)
-##    DB = DBSetup()
-##    Model = SQLModelSetup(ui.systemStatusComboBox.currentIndex()+1)
-##    TableViewSetup(ui)
-#    LayoutLogicSetup(ui,1)
-#    #ui.systemStatusComboBox.currentIndexChanged.connect(lambda: on_combox_status(ui.systemStatusComboBox.currentIndex()+1))
-##    ui.paperInputPushButton.clicked.connect(lambda: on_inputbutton_push())
-##    PaperInputDialog = QtGui.QDialog()
-##    paperinputui = paperinputdialog.Ui_PaperInputDialog()
-##    paperinputui.setupUi(PaperInputDialog)
-##    print paperinputui.groupNumberEdit.text()
-##    print type(paperinputui.groupNumberEdit.text())
-##    paperinputui.paperInputButtonBox.accepted.connect(lambda: database.InputPaper(paperinputui.groupNumberEdit.text(),\
-##        paperinputui.paperWidthEdit.text(), paperinputui.paperRollNumberEdit.text(),\
-##        paperinputui.paperSpecEdit.text(), paperinputui.paperWeightEdit.text(),\
-##        paperinputui.paperWeighPerUnitEdit.text(), paperinputui.paperLengthEdit.text(),\
-##        ui.systemStatusComboBox.currentIndex()+1))
-#    MainWindow.show()
-#    sys.exit(app.exec_())
-
-
-
-#    db = QtSql.QSqlDatabase.addDatabase("QSQLITE")
-#    db.setDatabaseName(os.getcwdu()+os.sep+'papers.sqlite')
-#    #db.setDatabaseName("D:\\huitong-paper\\papers.sqlite")
-#    print db.open()
-#    print db.tables()
-#    model = QtSql.QSqlTableModel(None,db)
-#    model.setTable("paper");
-#    model.setEditStrategy(QtSql.QSqlTableModel.OnManualSubmit);
-#    model.select();
-##    model = QtSql.QSqlQueryModel()
-##    model.setQuery("SELECT * FROM paper".encode('utf8'))
-#    #print model.lastError().text()
-##    model.setHeaderData(0,1, "paperWeight")
-#    ui.tableView.setModel(model)
-#    ui.tableView.show()
-#    ui.tableView.setSortingEnabled(True)

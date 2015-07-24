@@ -2,13 +2,12 @@
 
 # Form implementation generated from reading ui file 'mainwindow.ui'
 #
-# Created: Tue Jul 14 15:19:10 2015
+# Created: Tue Jul 21 15:36:01 2015
 #      by: PyQt4 UI code generator 4.11.3
 #
 # WARNING! All changes made in this file will be lost!
 
 from PyQt4 import QtCore, QtGui
-import layoutlogic
 
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
@@ -34,17 +33,20 @@ class Ui_MainWindow(object):
         self.verticalLayout.setObjectName(_fromUtf8("verticalLayout"))
         self.paperInputTitle = QtGui.QLabel(self.centralWidget)
         font = QtGui.QFont()
-        font.setPointSize(12)
+        font.setPointSize(13)
         self.paperInputTitle.setFont(font)
         self.paperInputTitle.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.paperInputTitle.setObjectName(_fromUtf8("paperInputTitle"))
         self.verticalLayout.addWidget(self.paperInputTitle)
         self.systemStatusComboBox = QtGui.QComboBox(self.centralWidget)
-        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Fixed, QtGui.QSizePolicy.Fixed)
+        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.systemStatusComboBox.sizePolicy().hasHeightForWidth())
         self.systemStatusComboBox.setSizePolicy(sizePolicy)
+        font = QtGui.QFont()
+        font.setPointSize(11)
+        self.systemStatusComboBox.setFont(font)
         self.systemStatusComboBox.setObjectName(_fromUtf8("systemStatusComboBox"))
         self.systemStatusComboBox.addItem(_fromUtf8(""))
         self.systemStatusComboBox.addItem(_fromUtf8(""))
@@ -57,9 +59,15 @@ class Ui_MainWindow(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.tableView.sizePolicy().hasHeightForWidth())
         self.tableView.setSizePolicy(sizePolicy)
+        font = QtGui.QFont()
+        font.setPointSize(11)
+        self.tableView.setFont(font)
         self.tableView.setObjectName(_fromUtf8("tableView"))
         self.verticalLayout.addWidget(self.tableView)
         self.paperInputPushButton = QtGui.QPushButton(self.centralWidget)
+        font = QtGui.QFont()
+        font.setPointSize(11)
+        self.paperInputPushButton.setFont(font)
         self.paperInputPushButton.setCheckable(False)
         self.paperInputPushButton.setChecked(False)
         self.paperInputPushButton.setObjectName(_fromUtf8("paperInputPushButton"))
@@ -86,7 +94,6 @@ if __name__ == "__main__":
     MainWindow = QtGui.QMainWindow()
     ui = Ui_MainWindow()
     ui.setupUi(MainWindow)
-    layoutlogic.LayoutLogicSetup(ui, ui.systemStatusComboBox.currentIndex()+1)
     MainWindow.show()
     sys.exit(app.exec_())
 
