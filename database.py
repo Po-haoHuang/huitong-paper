@@ -20,10 +20,10 @@ paper.cursor().execute("CREATE TABLE IF NOT EXISTS paper ( \
   paper_width INT NOT NULL, \
   paper_roll_number INT NOT NULL, \
   paper_spec TEXT NOT NULL, \
-  paper_weight INT NOT NULL, \
+  paper_weight INT, \
   paper_weight_per_unit INT NOT NULL, \
   paper_status INT NOT NULL, \
-  paper_length INT NOT NULL, \
+  paper_length INT, \
   PRIMARY KEY ( group_number, paper_width, paper_spec, paper_weight_per_unit, paper_status ) \
   );" )
 paper.commit()
@@ -38,7 +38,7 @@ def InputPaper(groupNumber, paperWidth, paperRollNumber, paperSpec,
 					paper_length) VALUES (?,?,?,?,?,?,?,?);"
 			paper.cursor().execute(sql,(groupNumber, paperWidth, paperRollNumber, paperSpec,\
                paperWeight, paperWeightPerUnit, paperStatus, paperLength))
-		except:
+		except Exception,e:
 			sql = "UPDATE paper SET paper_roll_number = paper_roll_number + " + paperRollNumber + \
 					", paper_weight = paper_weight + " + paperWeight + \
 					", paper_length = paper_length + " + paperLength + \
