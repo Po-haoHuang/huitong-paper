@@ -2,8 +2,7 @@
 
 # Form implementation generated from reading ui file 'modifydialog.ui'
 #
-# Created: Mon Jul 20 14:36:56 2015
-#      by: PyQt4 UI code generator 4.11.3
+# Created by: PyQt4 UI code generator 4.11.4
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -32,18 +31,19 @@ class Ui_ModifyDialog(object):
         self.resultbuttonBox.setOrientation(QtCore.Qt.Horizontal)
         self.resultbuttonBox.setStandardButtons(QtGui.QDialogButtonBox.Ok)
         self.resultbuttonBox.setObjectName(_fromUtf8("resultbuttonBox"))
-        self.transfercheckBox = QtGui.QCheckBox(ModifyDialog)
-        self.transfercheckBox.setGeometry(QtCore.QRect(40, 20, 51, 41))
-        font = QtGui.QFont()
-        font.setPointSize(12)
-        self.transfercheckBox.setFont(font)
-        self.transfercheckBox.setObjectName(_fromUtf8("transfercheckBox"))
         self.deletecheckBox = QtGui.QCheckBox(ModifyDialog)
         self.deletecheckBox.setGeometry(QtCore.QRect(150, 20, 51, 41))
         font = QtGui.QFont()
         font.setPointSize(12)
         self.deletecheckBox.setFont(font)
         self.deletecheckBox.setObjectName(_fromUtf8("deletecheckBox"))
+        self.transferpushButton = QtGui.QPushButton(ModifyDialog)
+        self.transferpushButton.setGeometry(QtCore.QRect(50, 30, 61, 23))
+        font = QtGui.QFont()
+        font.setFamily(_fromUtf8("Agency FB"))
+        font.setPointSize(10)
+        self.transferpushButton.setFont(font)
+        self.transferpushButton.setObjectName(_fromUtf8("transferpushButton"))
 
         self.retranslateUi(ModifyDialog)
         QtCore.QObject.connect(self.resultbuttonBox, QtCore.SIGNAL(_fromUtf8("accepted()")), ModifyDialog.accept)
@@ -52,8 +52,8 @@ class Ui_ModifyDialog(object):
 
     def retranslateUi(self, ModifyDialog):
         ModifyDialog.setWindowTitle(_translate("ModifyDialog", "Dialog", None))
-        self.transfercheckBox.setText(_translate("ModifyDialog", "完工", None))
         self.deletecheckBox.setText(_translate("ModifyDialog", "刪除", None))
+        self.transferpushButton.setText(_translate("ModifyDialog", "入庫", None))
 
 
 if __name__ == "__main__":

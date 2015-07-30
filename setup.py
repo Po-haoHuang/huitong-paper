@@ -9,6 +9,7 @@ from distutils.core import setup
 import py2exe, sys, os
 
 
+
 sys.argv.append('py2exe')
 sys.setrecursionlimit(5000)
 
@@ -21,7 +22,7 @@ sys.setrecursionlimit(5000)
 #    ])]
 
 setup(
-    options = {'py2exe': {'compressed': True,"includes":["sip"]}},
+    options = {'py2exe': {'compressed': True,"includes":["sip"], 'bundle_files': 1}},
     windows = [{'script': "layoutlogic.py"}],
     zipfile = None,
 #    data_files = DATA,

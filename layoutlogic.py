@@ -43,16 +43,16 @@ class mySqlTableModel(QtSql.QSqlTableModel):
                 return QtSql.QSqlTableModel.data(self,index, role)
 
 
-nameList = ["批號","紙幅(mm)","顆數","規格(基重條數)","重量(kg)","原基重(gsm)","狀態","米數(m)"]
+nameList = ["批號","紙幅(mm)","原基重(gsm)","規格(基重條數)","顆數","廠商","狀態","米數(m)","重量(kg)"]
 
 def DBSetup():
     db = QtSql.QSqlDatabase.addDatabase("QSQLITE")
-    db.setDatabaseName(os.getcwdu()+os.sep+'papers.sqlite')
+    db.setDatabaseName(os.getcwd()+os.sep+'papers.sqlite')
     db.open()
     return db
 
 def SQLModelSetup(db,status):
-    model = mySqlTableModel(None,db)
+    model = mySqlTableModel(MainWindow,db)
     model.setTable("paper")
     model.setEditStrategy(QtSql.QSqlTableModel.OnManualSubmit)
     model.setFilter('paper_status = ' + str(status))
@@ -65,6 +65,8 @@ def SQLModelSetup(db,status):
 def TableViewSetup(ui, model):
     ui.tableView.setModel(model)
     ui.tableView.hideColumn(6)
+    ui.tableView.hideColumn(7)
+    ui.tableView.hideColumn(8)    
     ui.tableView.setSortingEnabled(True)
     ui.tableView.setEditTriggers(QtGui.QAbstractItemView.NoEditTriggers)
     ui.tableView.horizontalHeader().setResizeMode(Qt.QHeaderView.Stretch)
@@ -90,43 +92,30 @@ def on_combox_status(model,n):
         ui.paperInputPushButton.setDisabled(True)
         ui.paperInputPushButton.setVisible(False)
 
-def on_inputbutton_push(PaperInputDialog):
+def on_inputbutton_push():
     if ui.systemStatusComboBox.currentIndex() == 0:
         paperinputui.groupNumberEdit.clear()
-        paperinputui.paperLengthEdit.clear()
         paperinputui.paperRollNumberEdit.clear()
         paperinputui.paperSpecEdit.clear()
         paperinputui.paperWeighPerUnitEdit.clear()
-        paperinputui.paperWeightEdit.clear()
+        paperinputui.paperCustomerEdit.clear()
         paperinputui.paperWidthEdit.clear()
         PaperInputDialog.exec_()
-    elif ui.systemStatusComboBox.currentIndex() == 1:
-        paperscheduleui.paperLengthEdit.clear()
-        paperscheduleui.paperRollNumberEdit.clear()
-        paperscheduleui.paperWeightEdit.clear()
-        paperscheduleui.paperWidthEdit.clear()
-        paperscheduleui.paperLengthEdit_2.clear()
-        paperscheduleui.paperRollNumberEdit_2.clear()
-        paperscheduleui.paperWeightEdit_2.clear()
-        paperscheduleui.paperWidthEdit_2.clear()
-        PaperScheduleDialog.exec_()
     else:
         pass
 
 
 def on_paperinput_send(ui, paperinputui, model):
 #    print paperinputui.paperSpecEdit.text()
-    try:
-        database.InputPaper(paperinputui.groupNumberEdit.text(),\
-            paperinputui.paperWidthEdit.text(), paperinputui.paperRollNumberEdit.text(),\
-            paperinputui.paperSpecEdit.text(), paperinputui.paperWeightEdit.text(),\
-            paperinputui.paperWeighPerUnitEdit.text(), paperinputui.paperLengthEdit.text(),\
-            str(ui.systemStatusComboBox.currentIndex()+1))
+    ret = database.InputPaper(paperinputui.groupNumberEdit.text(),\
+        paperinputui.paperWidthEdit.text(), paperinputui.paperWeighPerUnitEdit.text(),\
+        paperinputui.paperSpecEdit.text(), paperinputui.paperRollNumberEdit.text(),\
+        paperinputui.paperCustomerEdit.text(), str(ui.systemStatusComboBox.currentIndex()+1))
+    if ret == 0:
         resultui.resultlabel.setText(_translate("resultui", "成功", None))
         #resultui.resultlabel.setAlignment()
         #resultui.resultlabel.adjustSize()
-    except Exception,e:
-        print e
+    else:
         resultui.resultlabel.setText(_translate("resultui", "失敗，請檢查輸入", None))
         #resultui.resultlabel.adjustSize()
     model.select()
@@ -136,28 +125,24 @@ def on_paperinput_send(ui, paperinputui, model):
 def on_tableView_horizontalHeader_sectionClicked(index):
     model.currentSelectedIndex = index
     if model.record(index).value('paper_status') == 1:
-        modifyui.transfercheckBox.setText(_translate("modifyui", "入庫", None))
-        modifyui.transfercheckBox.setDisabled(False)
-        modifyui.transfercheckBox.setVisible(True)
+        modifyui.transferpushButton.setText(_translate("modifyui", "入庫", None))
+    elif model.record(index).value('paper_status') == 2:
+        modifyui.transferpushButton.setText(_translate("modifyui", "排單", None))
     elif model.record(index).value('paper_status') == 3:
-        modifyui.transfercheckBox.setText(_translate("modifyui", "出貨", None))
-        modifyui.transfercheckBox.setDisabled(False)
-        modifyui.transfercheckBox.setVisible(True)
+        modifyui.transferpushButton.setText(_translate("modifyui", "出貨", None))
+
     elif model.record(index).value('paper_status') == 4:
-        modifyui.transfercheckBox.setText(_translate("modifyui", "出貨", None))
-        modifyui.transfercheckBox.setDisabled(False)
-        modifyui.transfercheckBox.setVisible(True)
+        modifyui.transferpushButton.setText(_translate("modifyui", "出貨", None))
+
     elif model.record(index).value('paper_status') == 5:
-        modifyui.transfercheckBox.setText(_translate("modifyui", "完工", None))
-        modifyui.transfercheckBox.setDisabled(False)
-        modifyui.transfercheckBox.setVisible(True)
+        modifyui.transferpushButton.setText(_translate("modifyui", "完工", None))
+
     elif model.record(index).value('paper_status') == 6:
-        modifyui.transfercheckBox.setText(_translate("modifyui", "完工", None))
-        modifyui.transfercheckBox.setDisabled(False)
-        modifyui.transfercheckBox.setVisible(True)
+        modifyui.transferpushButton.setText(_translate("modifyui", "完工", None))
+
     else :
-        modifyui.transfercheckBox.setDisabled(True)
-        modifyui.transfercheckBox.setVisible(False)
+        modifyui.transferpushButton.setDisabled(True)
+        modifyui.transferpushButton.setVisible(False)
 
 #    print model.record(index).value(0)
     ModifyDialog.exec_()
@@ -167,74 +152,90 @@ def on_modify_send():
         #print model.record(model.currentSelectedIndex).value('paper_spec')
         modifyui.deletecheckBox.setChecked(False)
         model.removeRow(model.currentSelectedIndex)
+        model.submitAll()
         return
 
-    if modifyui.transfercheckBox.isChecked() == True:
-        if model.record(model.currentSelectedIndex).value('paper_status') == 1:
-            record = QtSql.QSqlRecord(model.record(model.currentSelectedIndex))
-            record.setValue('paper_status', 2)
-            model.setRecord(model.currentSelectedIndex, record)
-        elif model.record(model.currentSelectedIndex).value('paper_status') == 3:
-            model.removeRow(model.currentSelectedIndex)
-        elif model.record(model.currentSelectedIndex).value('paper_status') == 4:
-            model.removeRow(model.currentSelectedIndex)
-        elif model.record(model.currentSelectedIndex).value('paper_status') == 5:
-            record = QtSql.QSqlRecord(model.record(model.currentSelectedIndex))
-            record.setValue('paper_status', 3)
-            model.setRecord(model.currentSelectedIndex, record)
-        elif model.record(model.currentSelectedIndex).value('paper_status') == 6:
-            record = QtSql.QSqlRecord(model.record(model.currentSelectedIndex))
-            record.setValue('paper_status', 4)
-            model.setRecord(model.currentSelectedIndex, record)
-        else :
-            pass
-        modifyui.transfercheckBox.setChecked(False)
-    else:
+def on_transfer_push():
+    if model.record(model.currentSelectedIndex).value('paper_status') == 1:
+        record = QtSql.QSqlRecord(model.record(model.currentSelectedIndex))
+        record.setValue('paper_status', 2)
+        model.setRecord(model.currentSelectedIndex, record)
+    elif model.record(model.currentSelectedIndex).value('paper_status') == 2:
+        for i in range(0, 10):
+            paperscheduleui.gridLayout.removeWidget(paperscheduleui.paperCustomerEdit[i])
+            paperscheduleui.gridLayout.removeWidget(paperscheduleui.paperWidthEdit[i])
+            paperscheduleui.paperCustomerEdit[i].setVisible(False)
+            paperscheduleui.paperWidthEdit[i].setVisible(False)
+        paperscheduleui.editCount = 2       
+        for i in range(paperscheduleui.editCount):
+            paperscheduleui.gridLayout.addWidget(paperscheduleui.paperWidthEdit[i], 3, i+1, 1, 1)
+            paperscheduleui.gridLayout.addWidget(paperscheduleui.paperCustomerEdit[i], 4, i+1, 1, 1)
+            paperscheduleui.paperWidthEdit[i].clear()
+            paperscheduleui.paperCustomerEdit[i].clear()
+            paperscheduleui.paperWidthEdit[i].setVisible(True)
+            paperscheduleui.paperCustomerEdit[i].setVisible(True)        
+        PaperScheduleDialog.exec_()
+
+    elif model.record(model.currentSelectedIndex).value('paper_status') == 3:
+        model.removeRow(model.currentSelectedIndex)
+    elif model.record(model.currentSelectedIndex).value('paper_status') == 4:
+        model.removeRow(model.currentSelectedIndex)
+    elif model.record(model.currentSelectedIndex).value('paper_status') == 5:
+        record = QtSql.QSqlRecord(model.record(model.currentSelectedIndex))
+        record.setValue('paper_status', 3)
+        model.setRecord(model.currentSelectedIndex, record)
+    elif model.record(model.currentSelectedIndex).value('paper_status') == 6:
+        record = QtSql.QSqlRecord(model.record(model.currentSelectedIndex))
+        record.setValue('paper_status', 4)
+        model.setRecord(model.currentSelectedIndex, record)
+    else :
         pass
     model.submitAll()
+    ModifyDialog.close()
+
+def on_paperschedule_plus():
+    if paperscheduleui.editCount  < 10:
+        i = paperscheduleui.editCount
+        paperscheduleui.editCount += 1
+        paperscheduleui.gridLayout.addWidget(paperscheduleui.paperWidthEdit[i], 3, i+1, 1, 1)
+        paperscheduleui.gridLayout.addWidget(paperscheduleui.paperCustomerEdit[i], 4, i+1, 1, 1)
+        paperscheduleui.paperWidthEdit[i].clear()
+        paperscheduleui.paperCustomerEdit[i].clear()   
+        paperscheduleui.paperWidthEdit[i].setVisible(True)
+        paperscheduleui.paperCustomerEdit[i].setVisible(True)
+    else:
+        pass
 
 def on_paperschedule_send():
-    record_1 = QtSql.QSqlRecord(model.record(model.currentSelectedIndex))
-    record_1.setValue('paper_status', 5)
-    record_1.setValue('paper_width', int(paperscheduleui.paperWidthEdit.text()))
-    record_1.setValue('paper_weight', int(paperscheduleui.paperWeightEdit.text()))
-    record_1.setValue('paper_length', int(paperscheduleui.paperLengthEdit.text()))
-    record_1.setValue('paper_roll_number', int(paperscheduleui.paperRollNumberEdit.text()))
-    record_2 = QtSql.QSqlRecord(model.record(model.currentSelectedIndex))
-    record_2.setValue('paper_status', 6)
-    record_2.setValue('paper_width', int(paperscheduleui.paperWidthEdit_2.text()))
-    record_2.setValue('paper_weight', int(paperscheduleui.paperWeightEdit_2.text()))
-    record_2.setValue('paper_length', int(paperscheduleui.paperLengthEdit_2.text()))
-    record_2.setValue('paper_roll_number', int(paperscheduleui.paperRollNumberEdit_2.text()))
-    model.insertRecord(-1, record_1)
-    model.insertRecord(-1, record_2)
+    ret = {}
+    record = model.record(model.currentSelectedIndex)
+    for i in range(0, paperscheduleui.editCount):
+        if paperscheduleui.paperCustomerEdit[i].text() == "":            
+            ret[i] = database.InputPaper(record.value('group_number'),\
+            paperscheduleui.paperWidthEdit[i].text(), record.value('paper_weight_per_unit'),\
+            record.value('paper_spec'), paperscheduleui.paperRollNumberEdit.text(),\
+            paperscheduleui.paperCustomerEdit[i].text(), 6)
+        else:
+            ret[i] = database.InputPaper(record.value('group_number'),\
+            paperscheduleui.paperWidthEdit[i].text(), record.value('paper_weight_per_unit'),\
+            record.value('paper_spec'), paperscheduleui.paperRollNumberEdit.text(),\
+            paperscheduleui.paperCustomerEdit[i].text(), 5)            
+    
+        if ret[i] == 0:
+            resultui.resultlabel.setText(_translate("resultui", "成功", None))
+        else:
+            resultui.resultlabel.setText(_translate("resultui", "失敗，請檢查輸入", None))
+            break
+
     if int(paperscheduleui.paperRollNumberEdit.text()) \
-            == model.record(model.currentSelectedIndex).value('paper_roll_number'):
+                == model.record(model.currentSelectedIndex).value('paper_roll_number'):
         model.removeRow(model.currentSelectedIndex)
     else:
         record = QtSql.QSqlRecord(model.record(model.currentSelectedIndex))
-        record.setValue('paper_weight', model.record(model.currentSelectedIndex).value('paper_weight') \
-            - int(paperscheduleui.paperWeightEdit.text()) - int(paperscheduleui.paperWeightEdit_2.text()))
-        record.setValue('paper_length', model.record(model.currentSelectedIndex).value('paper_length') - int(paperscheduleui.paperLengthEdit.text()))
         record.setValue('paper_roll_number', model.record(model.currentSelectedIndex).value('paper_roll_number') - int(paperscheduleui.paperRollNumberEdit.text()))
         model.setRecord(model.currentSelectedIndex, record)
     model.submitAll()
-
-
-
-def LayoutLogicSetup(ui,status):
-    db = DBSetup()
-    model = SQLModelSetup(db, ui.systemStatusComboBox.currentIndex()+1)
-
-    TableViewSetup(ui, model)
-    PaperInputDialog = QtGui.QDialog()
-    paperinputui = paperinputdialog.Ui_PaperInputDialog()
-    paperinputui.setupUi(PaperInputDialog)
-    ui.systemStatusComboBox.currentIndexChanged.connect(lambda: on_combox_status(model, ui.systemStatusComboBox.currentIndex()+1))
-    ui.paperInputPushButton.clicked.connect(lambda: on_inputbutton_push(PaperInputDialog))
-    paperinputui.paperInputButtonBox.accepted.connect(lambda: on_paperinput_send(ui, paperinputui, model))
-    ui.tableView.verticalHeader().sectionClicked.connect(on_tableView_horizontalHeader_sectionClicked)
-
+    ResultDialog.exec_()
 
 if __name__ == "__main__":
     import sys
@@ -261,13 +262,32 @@ if __name__ == "__main__":
     PaperScheduleDialog = QtGui.QDialog()
     paperscheduleui = paperschedule.Ui_PaperScheduleDialog()
     paperscheduleui.setupUi(PaperScheduleDialog)
+    paperscheduleui.paperWidthEdit = {}
+    paperscheduleui.paperCustomerEdit = {}
+    paperscheduleui.editCount = 2
+    for i in range(0,10):
+        paperscheduleui.paperWidthEdit[i] = QtGui.QLineEdit()
+        paperscheduleui.paperWidthEdit[i].setObjectName(_fromUtf8("paperWidthEdit_"+str(i+1)))
+        paperscheduleui.paperWidthEdit[i].setVisible(False)
+        paperscheduleui.paperCustomerEdit[i] = QtGui.QLineEdit()
+        paperscheduleui.paperCustomerEdit[i].setObjectName(_fromUtf8("paperCustomerEdit_"+str(i+1)))
+        paperscheduleui.paperCustomerEdit[i].setVisible(False)
+        
+    for i in range(paperscheduleui.editCount):
+        paperscheduleui.gridLayout.addWidget(paperscheduleui.paperWidthEdit[i], 3, i+1, 1, 1)
+        paperscheduleui.gridLayout.addWidget(paperscheduleui.paperCustomerEdit[i], 4, i+1, 1, 1)
+        paperscheduleui.paperWidthEdit[i].setVisible(True)
+        paperscheduleui.paperCustomerEdit[i].setVisible(True)
+    #PaperScheduleDialog.exec_()
 
     ui.systemStatusComboBox.currentIndexChanged.connect(lambda: on_combox_status(model, ui.systemStatusComboBox.currentIndex()+1))
-    ui.paperInputPushButton.clicked.connect(lambda: on_inputbutton_push(PaperInputDialog))
+    ui.paperInputPushButton.clicked.connect(lambda: on_inputbutton_push())
     paperinputui.paperInputButtonBox.accepted.connect(lambda: on_paperinput_send(ui, paperinputui, model))
     ui.tableView.verticalHeader().sectionClicked.connect(on_tableView_horizontalHeader_sectionClicked)
     modifyui.resultbuttonBox.accepted.connect(on_modify_send)
+    modifyui.transferpushButton.clicked.connect(on_transfer_push)
     paperscheduleui.paperInputButtonBox.accepted.connect(on_paperschedule_send)
+    paperscheduleui.paperPlus.clicked.connect(on_paperschedule_plus)
 
     MainWindow.show()
     sys.exit(app.exec_())
