@@ -43,7 +43,7 @@ class mySqlTableModel(QtSql.QSqlTableModel):
                 return QtSql.QSqlTableModel.data(self,index, role)
 
 
-nameList = ["批號","紙幅(mm)","原基重(gsm)","規格(基重條數)","顆數","廠商","狀態","米數(m)","重量(kg)"]
+nameList = ["批號","紙幅(mm)","原基重(gsm)","規格(基重條數)","顆數","客戶","狀態","米數(m)","重量(kg)"]
 
 def DBSetup():
     db = QtSql.QSqlDatabase.addDatabase("QSQLITE")
@@ -94,10 +94,11 @@ def on_combox_status(model,n):
 
 def on_inputbutton_push():
     if ui.systemStatusComboBox.currentIndex() == 0:
-        paperinputui.groupNumberEdit.clear()
+        paperinputui.groupNumberEdit.setFocus()
+        #paperinputui.groupNumberEdit.clear()
         paperinputui.paperRollNumberEdit.clear()
-        paperinputui.paperSpecEdit.clear()
-        paperinputui.paperWeighPerUnitEdit.clear()
+        #paperinputui.paperSpecEdit.clear()
+        #paperinputui.paperWeighPerUnitEdit.clear()
         paperinputui.paperCustomerEdit.clear()
         paperinputui.paperWidthEdit.clear()
         PaperInputDialog.exec_()
@@ -106,33 +107,36 @@ def on_inputbutton_push():
 
 
 def on_paperinput_send(ui, paperinputui, model):
-#    print paperinputui.paperSpecEdit.text()
+
     ret = database.InputPaper(paperinputui.groupNumberEdit.text(),\
         paperinputui.paperWidthEdit.text(), paperinputui.paperWeighPerUnitEdit.text(),\
         paperinputui.paperSpecEdit.text(), paperinputui.paperRollNumberEdit.text(),\
         paperinputui.paperCustomerEdit.text(), str(ui.systemStatusComboBox.currentIndex()+1))
     if ret == 0:
         resultui.resultlabel.setText(_translate("resultui", "成功", None))
-        #resultui.resultlabel.setAlignment()
-        #resultui.resultlabel.adjustSize()
     else:
         resultui.resultlabel.setText(_translate("resultui", "失敗，請檢查輸入", None))
-        #resultui.resultlabel.adjustSize()
     model.select()
     ResultDialog.exec_()
 
 
 def on_tableView_horizontalHeader_sectionClicked(index):
     model.currentSelectedIndex = index
+    modifyui.customerlineEdit.setText(_translate("ModifyDialog", "客戶名稱", None))    
     if model.record(index).value('paper_status') == 1:
         modifyui.transferpushButton.setText(_translate("modifyui", "入庫", None))
+#        modifyui.customerlineEdit.setDisabled(True)
+#        modifyui.customerlineEdit.setVisible(False)
+
     elif model.record(index).value('paper_status') == 2:
         modifyui.transferpushButton.setText(_translate("modifyui", "排單", None))
     elif model.record(index).value('paper_status') == 3:
         modifyui.transferpushButton.setText(_translate("modifyui", "出貨", None))
 
     elif model.record(index).value('paper_status') == 4:
-        modifyui.transferpushButton.setText(_translate("modifyui", "出貨", None))
+        modifyui.transferpushButton.setDisabled(True)
+        modifyui.transferpushButton.setVisible(False)
+        #modifyui.transferpushButton.setText(_translate("modifyui", "出貨", None))
 
     elif model.record(index).value('paper_status') == 5:
         modifyui.transferpushButton.setText(_translate("modifyui", "完工", None))
@@ -144,23 +148,46 @@ def on_tableView_horizontalHeader_sectionClicked(index):
         modifyui.transferpushButton.setDisabled(True)
         modifyui.transferpushButton.setVisible(False)
 
-#    print model.record(index).value(0)
     ModifyDialog.exec_()
 
 def on_modify_send():
     if modifyui.deletecheckBox.isChecked() == True:
-        #print model.record(model.currentSelectedIndex).value('paper_spec')
         modifyui.deletecheckBox.setChecked(False)
         model.removeRow(model.currentSelectedIndex)
         model.submitAll()
-        return
+    elif modifyui.customerlineEdit.isModified() == True:
+        record = model.record(model.currentSelectedIndex)
+        if record.value('paper_status') == 4:
+            ret = database.InputPaper(record.value('group_number'),\
+            record.value('paper_width'), record.value('paper_weight_per_unit'),\
+            record.value('paper_spec'), record.value('paper_roll_number'),\
+            modifyui.customerlineEdit.text(), str(3))
+        elif record.value('paper_status') == 6:
+            ret = database.InputPaper(record.value('group_number'),\
+            record.value('paper_width'), record.value('paper_weight_per_unit'),\
+            record.value('paper_spec'), record.value('paper_roll_number'),\
+            modifyui.customerlineEdit.text(), str(5))
+        else: 
+            ret = database.InputPaper(record.value('group_number'),\
+            record.value('paper_width'), record.value('paper_weight_per_unit'),\
+            record.value('paper_spec'), record.value('paper_roll_number'),\
+            modifyui.customerlineEdit.text(), record.value('paper_status'))
+        model.removeRow(model.currentSelectedIndex)
+        model.submitAll()        
+
 
 def on_transfer_push():
+    record = model.record(model.currentSelectedIndex)    
     if model.record(model.currentSelectedIndex).value('paper_status') == 1:
-        record = QtSql.QSqlRecord(model.record(model.currentSelectedIndex))
-        record.setValue('paper_status', 2)
-        model.setRecord(model.currentSelectedIndex, record)
+        ret = database.InputPaper(record.value('group_number'),\
+        record.value('paper_width'), record.value('paper_weight_per_unit'),\
+        record.value('paper_spec'), record.value('paper_roll_number'),\
+        record.value('paper_customer'), str(2))
+        model.removeRow(model.currentSelectedIndex)
+        model.submitAll()
+        
     elif model.record(model.currentSelectedIndex).value('paper_status') == 2:
+        paperscheduleui.paperRollNumberEdit.clear()
         for i in range(0, 10):
             paperscheduleui.gridLayout.removeWidget(paperscheduleui.paperCustomerEdit[i])
             paperscheduleui.gridLayout.removeWidget(paperscheduleui.paperWidthEdit[i])
@@ -178,19 +205,32 @@ def on_transfer_push():
 
     elif model.record(model.currentSelectedIndex).value('paper_status') == 3:
         model.removeRow(model.currentSelectedIndex)
+        model.submitAll()
+        
     elif model.record(model.currentSelectedIndex).value('paper_status') == 4:
         model.removeRow(model.currentSelectedIndex)
+        model.submitAll()
+        
     elif model.record(model.currentSelectedIndex).value('paper_status') == 5:
-        record = QtSql.QSqlRecord(model.record(model.currentSelectedIndex))
-        record.setValue('paper_status', 3)
-        model.setRecord(model.currentSelectedIndex, record)
+        ret = database.InputPaper(record.value('group_number'),\
+        record.value('paper_width'), record.value('paper_weight_per_unit'),\
+        record.value('paper_spec'), record.value('paper_roll_number'),\
+        record.value('paper_customer'), str(3))
+        model.removeRow(model.currentSelectedIndex)
+        model.submitAll()
+
+        
     elif model.record(model.currentSelectedIndex).value('paper_status') == 6:
-        record = QtSql.QSqlRecord(model.record(model.currentSelectedIndex))
-        record.setValue('paper_status', 4)
-        model.setRecord(model.currentSelectedIndex, record)
+        ret = database.InputPaper(record.value('group_number'),\
+        record.value('paper_width'), record.value('paper_weight_per_unit'),\
+        record.value('paper_spec'), record.value('paper_roll_number'),\
+        record.value('paper_customer'), str(4)) 
+        model.removeRow(model.currentSelectedIndex)
+        model.submitAll()
+        
     else :
         pass
-    model.submitAll()
+
     ModifyDialog.close()
 
 def on_paperschedule_plus():
@@ -278,7 +318,7 @@ if __name__ == "__main__":
         paperscheduleui.gridLayout.addWidget(paperscheduleui.paperCustomerEdit[i], 4, i+1, 1, 1)
         paperscheduleui.paperWidthEdit[i].setVisible(True)
         paperscheduleui.paperCustomerEdit[i].setVisible(True)
-    #PaperScheduleDialog.exec_()
+
 
     ui.systemStatusComboBox.currentIndexChanged.connect(lambda: on_combox_status(model, ui.systemStatusComboBox.currentIndex()+1))
     ui.paperInputPushButton.clicked.connect(lambda: on_inputbutton_push())

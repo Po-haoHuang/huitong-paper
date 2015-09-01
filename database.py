@@ -45,31 +45,33 @@ def InputPaper(groupNumber, paperWidth, paperWeightPerUnit, paperSpec,
         except:
             print(sys.exc_info())
             try:
-                sql = "UPDATE paper SET paper_roll_number = paper_roll_number + " + paperRollNumber + \
+                sql = "UPDATE paper SET paper_roll_number = paper_roll_number + " + str(paperRollNumber) + \
                         ", paper_weight = paper_weight + " + '0' + \
                         ", paper_length = paper_length + " + '0' + \
-                        " WHERE group_number = " + groupNumber + \
-                        " AND paper_width = " + paperWidth + \
-                        " AND paper_spec = " + paperSpec + \
-                        " AND paper_weight_per_unit = " + paperWeightPerUnit + \
-                        " AND paper_customer = "  + paperCustomer +\
-                        " AND paper_status = " + paperStatus +" ;"
+                        " WHERE group_number = " + str(groupNumber) + \
+                        " AND paper_width = " + str(paperWidth) + \
+                        " AND paper_spec = '" + str(paperSpec) + "'" + \
+                        " AND paper_weight_per_unit = " + str(paperWeightPerUnit) + \
+                        " AND paper_customer = '"  + str(paperCustomer) + "'" + \
+                        " AND paper_status = " + str(paperStatus) +" ;"
                 paper.cursor().execute(sql)
                 paper.commit()
                 return 0
             except:
                 try:
-                    sql = "UPDATE paper SET paper_roll_number = paper_roll_number + " + paperRollNumber + \
+                    print(sys.exc_info())
+                    sql = "UPDATE paper SET paper_roll_number = paper_roll_number + " + str(paperRollNumber) + \
                             ", paper_weight = paper_weight + " + '0' + \
                             ", paper_length = paper_length + " + '0' + \
-                            " WHERE group_number = " + groupNumber + \
-                            " AND paper_width = " + paperWidth + \
-                            " AND paper_spec = " + paperSpec + \
-                            " AND paper_weight_per_unit = " + paperWeightPerUnit + \
+                            " WHERE group_number = " + str(groupNumber) + \
+                            " AND paper_width = " + str(paperWidth) + \
+                            " AND paper_spec = '" + str(paperSpec) + "'" + \
+                            " AND paper_weight_per_unit = " + str(paperWeightPerUnit) + \
                             " AND ifnull(paper_customer, '') = ''"\
-                            " AND paper_status = " + paperStatus +" ;"
+                            " AND paper_status = " + str(paperStatus) +" ;"
                     paper.cursor().execute(sql)
                     paper.commit()
+                    print(sys.exc_info())
                     return 0
                 except:
                     print(sys.exc_info())
