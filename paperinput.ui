@@ -79,7 +79,7 @@
     </size>
    </property>
    <property name="focusPolicy">
-    <enum>Qt::ClickFocus</enum>
+    <enum>Qt::StrongFocus</enum>
    </property>
    <property name="inputMask">
     <string/>
@@ -160,7 +160,7 @@
     </size>
    </property>
    <property name="focusPolicy">
-    <enum>Qt::ClickFocus</enum>
+    <enum>Qt::StrongFocus</enum>
    </property>
    <property name="inputMask">
     <string/>
@@ -246,7 +246,7 @@
     </size>
    </property>
    <property name="focusPolicy">
-    <enum>Qt::ClickFocus</enum>
+    <enum>Qt::StrongFocus</enum>
    </property>
    <property name="inputMask">
     <string/>
@@ -311,7 +311,7 @@
     </size>
    </property>
    <property name="focusPolicy">
-    <enum>Qt::ClickFocus</enum>
+    <enum>Qt::StrongFocus</enum>
    </property>
    <property name="inputMask">
     <string/>
@@ -363,7 +363,7 @@
     </size>
    </property>
    <property name="focusPolicy">
-    <enum>Qt::ClickFocus</enum>
+    <enum>Qt::StrongFocus</enum>
    </property>
    <property name="inputMask">
     <string/>
@@ -415,7 +415,7 @@
     </size>
    </property>
    <property name="focusPolicy">
-    <enum>Qt::ClickFocus</enum>
+    <enum>Qt::StrongFocus</enum>
    </property>
    <property name="inputMask">
     <string/>
@@ -455,7 +455,30 @@
     <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
    </property>
   </widget>
+  <zorder>groupNumber</zorder>
+  <zorder>paperCustomerEdit</zorder>
+  <zorder>paperWeighPerUnit</zorder>
+  <zorder>paperRollNumber</zorder>
+  <zorder>paperSpecEdit</zorder>
+  <zorder>paperInputTitle</zorder>
+  <zorder>paperSpec</zorder>
+  <zorder>paperWeighPerUnitEdit</zorder>
+  <zorder>paperCustomer</zorder>
+  <zorder>groupNumberEdit</zorder>
+  <zorder>paperWidthEdit</zorder>
+  <zorder>paperRollNumberEdit</zorder>
+  <zorder>paperWidth</zorder>
+  <zorder>paperInputButtonBox</zorder>
  </widget>
+ <tabstops>
+  <tabstop>groupNumberEdit</tabstop>
+  <tabstop>paperSpecEdit</tabstop>
+  <tabstop>paperWidthEdit</tabstop>
+  <tabstop>paperRollNumberEdit</tabstop>
+  <tabstop>paperWeighPerUnitEdit</tabstop>
+  <tabstop>paperCustomerEdit</tabstop>
+  <tabstop>paperInputButtonBox</tabstop>
+ </tabstops>
  <resources/>
  <connections>
   <connection>

@@ -54,7 +54,8 @@ def DBSetup():
 def SQLModelSetup(db,status):
     model = mySqlTableModel(MainWindow,db)
     model.setTable("paper")
-    model.setEditStrategy(QtSql.QSqlTableModel.OnManualSubmit)
+    #model.setEditStrategy(QtSql.QSqlTableModel.OnManualSubmit)
+    model.setEditStrategy(QtSql.QSqlTableModel.OnFieldChange)
     model.setFilter('paper_status = ' + str(status))
     model.select()
     for i in range(model.columnCount()):
@@ -68,7 +69,8 @@ def TableViewSetup(ui, model):
     ui.tableView.hideColumn(7)
     ui.tableView.hideColumn(8)    
     ui.tableView.setSortingEnabled(True)
-    ui.tableView.setEditTriggers(QtGui.QAbstractItemView.NoEditTriggers)
+    ui.tableView.setEditTriggers(QtGui.QAbstractItemView.DoubleClicked)
+    #ui.tableView.setEditTriggers(QtGui.QAbstractItemView.NoEditTriggers)
     ui.tableView.horizontalHeader().setResizeMode(Qt.QHeaderView.Stretch)
     ui.tableView.show()
 
